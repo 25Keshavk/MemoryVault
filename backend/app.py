@@ -93,7 +93,7 @@ Be kind and considerate.
 
 If you can't find any relevant memories, encourage them to go to the add memory page and have them or a family member add a memory.
 
-Do not mention anything about you be an AI, or anything about context. try to act like a human.
+Do not mention anything about you being an AI, or anything about context. try to act like a human.
 """
 
 
