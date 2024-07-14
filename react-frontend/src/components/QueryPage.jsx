@@ -216,7 +216,7 @@ const QueryPage = () => {
             type="text"
             value={currentQuery}
             onChange={(e) => setCurrentQuery(e.target.value)}
-            placeholder="Enter your query..."
+            placeholder="Enter your query, and remember..."
             className="query-input"
             disabled={isLoading}
           />
