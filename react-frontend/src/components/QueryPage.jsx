@@ -8,6 +8,14 @@ const QueryPage = () => {
   const [queries, setQueries] = useState([]);
   const [currentQuery, setCurrentQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
+
+  const suggestedPrompts = [
+    "Tell me about a happy memory",
+    "Tell me about a time I spent with my family",
+    "What was my favorite childhood toy?",
+    "Describe a memorable vacation I took",
+  ];
 
   useEffect(() => {
     const savedConversations = JSON.parse(
@@ -15,11 +23,16 @@ const QueryPage = () => {
     );
     const sortedConversations = savedConversations.sort((a, b) => b.id - a.id);
     setConversations(sortedConversations);
-    if (sortedConversations.length > 0) {
+
+    if (
+      sortedConversations.length === 0 ||
+      !localStorage.getItem("hasVisited")
+    ) {
+      startNewConversation();
+      localStorage.setItem("hasVisited", "true");
+    } else {
       setCurrentConversationId(sortedConversations[0].id);
       setQueries(sortedConversations[0].queries);
-    } else {
-      startNewConversation();
     }
   }, []);
 
@@ -68,11 +81,19 @@ const QueryPage = () => {
     return formattedHistory;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!currentQuery.trim()) return;
+  const handlePromptClick = (prompt) => {
+    setShowWelcome(false);
+    startNewConversation();
+    setCurrentQuery(prompt);
+    handleSubmit(null, prompt);
+  };
 
-    const newQuery = { query: currentQuery, response: null, isLoading: true };
+  const handleSubmit = async (e, manualPrompt = null) => {
+    if (e) e.preventDefault();
+    const queryToSend = manualPrompt || currentQuery;
+    if (!queryToSend.trim()) return;
+
+    const newQuery = { query: queryToSend, response: null, isLoading: true };
     const updatedQueries = [...queries, newQuery];
     setQueries(updatedQueries);
     setCurrentQuery("");
@@ -123,8 +144,35 @@ const QueryPage = () => {
     setQueries(selectedConversation.queries);
   };
 
+  const renderWelcomeOverlay = () => (
+    <div className="welcome-overlay">
+      <div className="welcome-content">
+        <h2>Welcome to MemoryVault</h2>
+        <p>Here are some suggested prompts to get started:</p>
+        <div className="suggested-prompts">
+          {suggestedPrompts.map((prompt, index) => (
+            <button
+              key={index}
+              onClick={() => handlePromptClick(prompt)}
+              className="prompt-btn"
+            >
+              {prompt}
+            </button>
+          ))}
+        </div>
+        <button
+          onClick={() => setShowWelcome(false)}
+          className="close-welcome-btn"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="memory-vault">
+      {showWelcome && renderWelcomeOverlay()}
       <div className="sidebar">
         <button onClick={startNewConversation} className="new-conversation-btn">
           New Conversation
@@ -151,7 +199,31 @@ const QueryPage = () => {
         </div>
       </div>
       <div className="main-content">
-        {/* ... (keep the rest of the JSX unchanged) */}
+        <div className="conversation">
+          {queries.map((item, index) => (
+            <div key={index} className="query-response">
+              <p className="query">{item.query}</p>
+              {item.isLoading ? (
+                <div className="loading-animation">Loading...</div>
+              ) : (
+                <p className="response">{item.response}</p>
+              )}
+            </div>
+          ))}
+        </div>
+        <form onSubmit={handleSubmit} className="query-form">
+          <input
+            type="text"
+            value={currentQuery}
+            onChange={(e) => setCurrentQuery(e.target.value)}
+            placeholder="Enter your query..."
+            className="query-input"
+            disabled={isLoading}
+          />
+          <button type="submit" className="submit-button" disabled={isLoading}>
+            Send
+          </button>
+        </form>
       </div>
     </div>
   );

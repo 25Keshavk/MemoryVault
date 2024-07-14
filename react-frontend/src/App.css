@@ -1,12 +1,23 @@
 .nav-menu {
   display: flex;
-  justify-content: center;
-  padding: 20px 0;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
   background-color: #f8f9fa;
 }
 
+.nav-logo {
+  height: 40px; /* Adjust as needed */
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Adjust spacing between items */
+}
+
 .nav-link {
-  margin: 0 15px;
   padding: 10px 15px;
   text-decoration: none;
   color: #007bff;
@@ -18,4 +29,14 @@
 .nav-link:hover {
   background-color: #007bff;
   color: white;
+}
+
+.nav-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+}
+.logo-title-container {
+  display: flex;
+  align-items: center;
 }
