@@ -14,7 +14,7 @@ const MemoryInput = () => {
     setStatus("Saving...");
     try {
       const response = await axios.get(
-        "http://127.0.0.1:8080/postMemory?text=" + memory
+        "https://backend-a3kiovdawq-wl.a.run.app/postMemory?text=" + memory
       );
       console.log(response);
       setStatus("Memory saved successfully!");
