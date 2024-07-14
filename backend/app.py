@@ -59,7 +59,7 @@ def get_llm_response(query: str):
     llm = ChatOpenAI(
         openai_api_key=os.environ["OPENAI_API_KEY"],
         model_name="gpt-3.5-turbo",
-        temperature=0.0,
+        temperature=0.4,
     )
     qa = RetrievalQA.from_chain_type(
         llm=llm, chain_type="stuff", retriever=vectorstore.as_retriever()
@@ -81,6 +81,20 @@ def post_memory():
     add_document_to_pinecone(text)
 
     return "success"
+
+
+# System prompt to give some more guidance
+PROMPT = """
+You are an AI meant to help Alzheimer's patients remember their memories. An example question thhey might ask: "Tell me about a time I felt fulfilled."
+
+They could ask about some more detail for a memory that they remember a little of.
+
+Be kind and considerate.
+
+If you can't find any relevant memories, encourage them to go to the add memory page and have them or a family member add a memory.
+
+Do not mention anything about you be an AI, or anything about context. try to act like a human.
+"""
 
 
 @app.route("/query")
