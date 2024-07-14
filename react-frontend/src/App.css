@@ -65,3 +65,12 @@ body {
 * {
   font-family: "Courier Prime", monospace;
 }
+
+#queryMemories,
+#addMemory {
+  font-size: 20px;
+}
+
+#memoryVault {
+  font-size: 30px;
+}

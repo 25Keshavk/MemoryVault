@@ -10,7 +10,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <nav className="nav-menu">
-            <Link to="/" className="nav-link">
+            <Link to="/" className="nav-link" id="queryMemories">
               Query Memories
             </Link>
             <div className="logo-title-container">
@@ -19,9 +19,11 @@ function App() {
                 alt="MemoryVault Logo"
                 className="nav-logo"
               />
-              <span className="nav-title">MemoryVault</span>
+              <span className="nav-title" id="memoryVault">
+                MemoryVault
+              </span>
             </div>
-            <Link to="/add-memory" className="nav-link">
+            <Link to="/add-memory" className="nav-link" id="addMemory">
               Add Memory
             </Link>
           </nav>
