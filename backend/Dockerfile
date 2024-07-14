@@ -1,8 +1,8 @@
 # Set base image (host OS)
 FROM python:3.10-alpine
 
-# By default, listen on port 3131
-EXPOSE 3131/tcp
+# By default, listen on port 8080
+EXPOSE 8080/tcp
 
 # Set the working directory in the container
 WORKDIR /app

@@ -69,12 +69,12 @@ def get_llm_response(query: str):
     return res
 
 
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
 
 
-@app.route("/")
+@app.route("/query")
 def hello_world():
     text = """
                 my name is keshav kotamraju. i like to watch the stars.
@@ -91,4 +91,4 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=8080)
