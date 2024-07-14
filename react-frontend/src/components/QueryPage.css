@@ -1,16 +1,58 @@
 .memory-vault {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
   height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #ddd;
+}
+
+.new-conversation-btn {
+  padding: 10px;
+  margin: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.conversation-list {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.conversation-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.conversation-btn.active {
+  background-color: #e0e0e0;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .conversation {
-  width: 100%;
-  max-width: 600px;
+  flex-grow: 1;
   overflow-y: auto;
-  margin-bottom: 20px;
+  padding: 20px;
 }
 
 .query-response {
@@ -26,15 +68,17 @@
 }
 
 .query-form {
-  width: 100%;
-  max-width: 600px;
   display: flex;
+  padding: 20px;
+  background-color: #f0f0f0;
 }
 
 .query-input {
   flex-grow: 1;
   padding: 10px;
   font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px 0 0 5px;
 }
 
 .submit-button {
@@ -43,11 +87,17 @@
   background-color: #007bff;
   color: white;
   border: none;
+  border-radius: 0 5px 5px 0;
   cursor: pointer;
 }
 
-.submit-button:hover {
-  background-color: #0056b3;
+.submit-button:disabled {
+  background-color: #cccccc;
+}
+
+.loading-animation::after {
+  content: "...";
+  animation: ellipsis 1.5s infinite;
 }
 
 @keyframes ellipsis {
@@ -60,10 +110,4 @@
   66% {
     content: "...";
   }
-}
-
-.loading-animation::after {
-  content: ".";
-  display: inline-block;
-  animation: ellipsis 1.5s infinite;
 }

@@ -58,7 +58,7 @@ def get_llm_response(query: str):
     # completion llm
     llm = ChatOpenAI(
         openai_api_key=os.environ["OPENAI_API_KEY"],
-        model_name="gpt-3.5-turbo",
+        model_name="gpt-4o",
         temperature=0.4,
     )
     qa = RetrievalQA.from_chain_type(
@@ -103,6 +103,8 @@ Make it vivid and paraphrase.
 
 If you can't find any relevant memories, encourage them to go to the add memory page and have them or a family member add a memory.
 
+REMEMBER THE INFORMATION THAT THE USER TELLS YOU TO, EVEN IF YOU CAN'T FIND ANY RELEVANT MEMORIES.
+
 Do NOT
 - mention anything about you being an AI.
 - mention anything about context. 
@@ -119,6 +121,8 @@ def hello_world():
     query = request.args.get("query")
 
     query = PROMPT + query
+
+    print(query)
 
     res = get_llm_response(query)
     print(res)
