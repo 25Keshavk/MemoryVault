@@ -110,9 +110,12 @@ const QueryPage = () => {
     const formattedQuery = formatQueryHistory(queries, currentQuery);
 
     try {
-      const response = await axios.get("http://127.0.0.1:8080/query", {
-        params: { query: formattedQuery },
-      });
+      const response = await axios.get(
+        "https://backend-a3kiovdawq-wl.a.run.app/query",
+        {
+          params: { query: formattedQuery },
+        }
+      );
 
       console.log(response);
 
@@ -129,7 +132,7 @@ const QueryPage = () => {
         setIsImageLoading(true);
         try {
           const imageResponse = await axios.get(
-            "http://127.0.0.1:8080/generateImage",
+            "https://backend-a3kiovdawq-wl.a.run.app/generateImage",
             {
               params: { llmResponse: response.data },
             }
