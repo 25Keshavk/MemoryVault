@@ -59,7 +59,7 @@ def get_llm_response(query: str):
     llm = ChatOpenAI(
         openai_api_key=os.environ["OPENAI_API_KEY"],
         model_name="gpt-4o",
-        temperature=0.4,
+        temperature=0.2,
     )
     qa = RetrievalQA.from_chain_type(
         llm=llm,
@@ -101,14 +101,14 @@ Respond in the second person.
 
 Make it vivid and paraphrase. 
 
-If you can't find any relevant memories, encourage them to go to the add memory page and have them or a family member add a memory.
-
-REMEMBER THE INFORMATION THAT THE USER TELLS YOU TO, EVEN IF YOU CAN'T FIND ANY RELEVANT MEMORIES.
+REMEMBER THE INFORMATION THAT THE USER TELLS YOU TO.
 
 Do NOT
 - mention anything about you being an AI.
 - mention anything about context. 
-- make up false information.
+- make up ANY FALSE INFORMATION.
+
+If you can't find any relevant memories, tell them to go to the add memory page and have them or a family member add a memory.
 
 
 act like a human.
