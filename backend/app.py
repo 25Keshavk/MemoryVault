@@ -91,13 +91,4 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    text = """
-                my name is keshav kotamraju. i like to watch the stars.
-            """
-
-    # add_document_to_pinecone(text)
-
-    query = "what personality do you think keshav has"
-
-    res = get_llm_response(query)
-    print(res)
+    app.run(host="0.0.0.0", port=3000)
