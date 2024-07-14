@@ -13,6 +13,14 @@ function App() {
             <Link to="/" className="nav-link">
               Query Memories
             </Link>
+            <div className="logo-title-container">
+              <img
+                src="/logo.png"
+                alt="MemoryVault Logo"
+                className="nav-logo"
+              />
+              <span className="nav-title">MemoryVault</span>
+            </div>
             <Link to="/add-memory" className="nav-link">
               Add Memory
             </Link>
