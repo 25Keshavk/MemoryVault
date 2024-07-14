@@ -220,3 +220,61 @@ body {
 .close-welcome-btn:hover {
   background-color: #0056b3;
 }
+
+.main-content {
+  position: relative;
+}
+
+.response-container {
+  position: relative;
+}
+
+.image-container,
+.image-placeholder {
+  float: right;
+  width: 400px;
+  height: 400px;
+  margin-left: 40px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  color: #666;
+  border-radius: 8px;
+}
+
+.first-response-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.response-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.response {
+  text-align: justify;
+}
+
+@media (max-width: 768px) {
+  .image-container {
+    float: none;
+    width: 100%;
+    max-width: 512px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 20px auto;
+  }
+}

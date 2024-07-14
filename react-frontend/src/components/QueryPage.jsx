@@ -10,6 +10,10 @@ const QueryPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
 
+  const [isImageLoading, setIsImageLoading] = useState(false);
+
+  const [firstResponseImage, setFirstResponseImage] = useState(null);
+
   const suggestedPrompts = [
     "Tell me about a happy memory",
     "Tell me about a time I spent with my family",
@@ -24,23 +28,22 @@ const QueryPage = () => {
     const sortedConversations = savedConversations.sort((a, b) => b.id - a.id);
     setConversations(sortedConversations);
 
-    if (
-      sortedConversations.length === 0 ||
-      !localStorage.getItem("hasVisited")
-    ) {
-      startNewConversation();
-      localStorage.setItem("hasVisited", "true");
+    if (sortedConversations.length === 0) {
+      startNewConversation(true); // Pass true to indicate it's the initial load
     } else {
       setCurrentConversationId(sortedConversations[0].id);
       setQueries(sortedConversations[0].queries);
     }
+
+    // Always show the welcome screen when the page loads
+    setShowWelcome(true);
   }, []);
 
   const saveToLocalStorage = (updatedConversations) => {
     localStorage.setItem("conversations", JSON.stringify(updatedConversations));
   };
 
-  const startNewConversation = () => {
+  const startNewConversation = (isInitialLoad = false) => {
     const newId = Date.now().toString();
     const newConversation = { id: newId, queries: [] };
     const updatedConversations = [newConversation, ...conversations];
@@ -48,6 +51,11 @@ const QueryPage = () => {
     setCurrentConversationId(newId);
     setQueries([]);
     saveToLocalStorage(updatedConversations);
+
+    // Don't hide the welcome screen here
+    // if (!isInitialLoad) {
+    //   setShowWelcome(false);
+    // }
   };
 
   const deleteConversation = (id, event) => {
@@ -116,6 +124,24 @@ const QueryPage = () => {
 
       setQueries(updatedQueriesWithResponse);
 
+      // Check if this is the first query and generate an image
+      if (queries.length === 0) {
+        setIsImageLoading(true);
+        try {
+          const imageResponse = await axios.get(
+            "http://127.0.0.1:8080/generateImage",
+            {
+              params: { llmResponse: response.data },
+            }
+          );
+          setFirstResponseImage(imageResponse.data);
+        } catch (error) {
+          console.error("Error generating image:", error);
+        } finally {
+          setIsImageLoading(false);
+        }
+      }
+
       const updatedConversations = conversations.map((conv) =>
         conv.id === currentConversationId
           ? { ...conv, queries: updatedQueriesWithResponse }
@@ -142,6 +168,7 @@ const QueryPage = () => {
     setCurrentConversationId(id);
     const selectedConversation = conversations.find((conv) => conv.id === id);
     setQueries(selectedConversation.queries);
+    setShowWelcome(false);
   };
 
   const renderWelcomeOverlay = () => (
@@ -206,7 +233,25 @@ const QueryPage = () => {
               {item.isLoading ? (
                 <div className="loading-animation">Loading...</div>
               ) : (
-                <p className="response">{item.response}</p>
+                <div className="response-container">
+                  {index === 0 && (isImageLoading || firstResponseImage) && (
+                    <div className="image-container">
+                      {isImageLoading ? (
+                        <div className="image-placeholder">
+                          <span>Loading image...</span>
+                        </div>
+                      ) : (
+                        <img
+                          src={firstResponseImage}
+                          alt="Generated from first response"
+                          className="first-response-image"
+                          onLoad={() => setIsImageLoading(false)}
+                        />
+                      )}
+                    </div>
+                  )}
+                  <p className="response">{item.response}</p>
+                </div>
               )}
             </div>
           ))}
