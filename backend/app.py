@@ -62,7 +62,9 @@ def get_llm_response(query: str):
         temperature=0.4,
     )
     qa = RetrievalQA.from_chain_type(
-        llm=llm, chain_type="stuff", retriever=vectorstore.as_retriever()
+        llm=llm,
+        chain_type="stuff",
+        retriever=vectorstore.as_retriever(k=10),
     )
 
     res = qa.run(query)
@@ -93,15 +95,30 @@ They could ask about some more detail for a memory that they remember a little o
 
 Be kind and considerate.
 
+USE AS MUCH DETAIL AS POSSIBLE. you want them to feel like they are living there again.
+
+Respond in the second person.
+
+Make it vivid and paraphrase. 
+
 If you can't find any relevant memories, encourage them to go to the add memory page and have them or a family member add a memory.
 
-Do not mention anything about you being an AI, or anything about context. try to act like a human.
+Do NOT
+- mention anything about you being an AI.
+- mention anything about context. 
+- make up false information.
+
+
+act like a human.
+
 """
 
 
 @app.route("/query")
 def hello_world():
     query = request.args.get("query")
+
+    query = PROMPT + query
 
     res = get_llm_response(query)
     print(res)
