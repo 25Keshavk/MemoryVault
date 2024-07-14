@@ -74,15 +74,18 @@ from flask import Flask, request
 app = Flask(__name__)
 
 
+@app.route("/postMemory")
+def post_memory():
+    text = request.args.get("text")
+
+    add_document_to_pinecone(text)
+
+    return "success"
+
+
 @app.route("/query")
 def hello_world():
-    text = """
-                my name is keshav kotamraju. i like to watch the stars.
-            """
-
-    # add_document_to_pinecone(text)
-
-    query = "what personality do you think keshav has"
+    query = request.args.get("query")
 
     res = get_llm_response(query)
     print(res)
