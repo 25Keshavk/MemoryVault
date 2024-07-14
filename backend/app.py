@@ -87,6 +87,37 @@ def post_memory():
     return "success"
 
 
+DALLE3_PROMPT = "you are an ai that helps people with alzheimers visualize their past memories. visualize the given memory  with a photo. make it obviously a sketch as opposed to photorealistic, but an artistic one. capture the spirit of the memory. only use drawings, no words or text"
+
+from openai import OpenAI
+
+
+@app.route("/generateImage")
+def generate_dalle3_image(
+    image_dimension="1024x1024",
+    image_quality="hd",
+    model="dall-e-3",
+    nb_final_image=1,
+):
+
+    prompt = DALLE3_PROMPT + request.args.get("llmResponse")
+
+    # Instantiate the OpenAI client
+    client = OpenAI()
+
+    response = client.images.generate(
+        model=model,
+        prompt=prompt,
+        size=image_dimension,
+        quality=image_quality,
+        n=nb_final_image,
+    )
+
+    image_url = response.data[0].url
+
+    return image_url
+
+
 # System prompt to give some more guidance
 PROMPT = """
 You are an AI meant to help Alzheimer's patients remember their memories. An example question thhey might ask: "Tell me about a time I felt fulfilled."
@@ -124,10 +155,10 @@ def hello_world():
 
     print(query)
 
-    res = get_llm_response(query)
-    print(res)
+    llm_res = get_llm_response(query)
+    print(llm_res)
 
-    return res
+    return llm_res
 
 
 if __name__ == "__main__":
